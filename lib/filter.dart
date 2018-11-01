@@ -5,8 +5,10 @@ import 'package:frontend_notes/enums/sort_by.dart';
 class FilterChangeEvent {
   Languages language;
   SortBy sortBy;
+  String q;
+  List domains;
 
-  FilterChangeEvent({this.language, this.sortBy});
+  FilterChangeEvent({this.language, this.sortBy, this.q, this.domains});
 }
 
 class Filter extends StatefulWidget {

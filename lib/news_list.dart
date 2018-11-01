@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_notes/services/news_api_service.dart';
 import 'package:frontend_notes/filter.dart';
 import 'package:frontend_notes/news_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NewsList extends StatefulWidget {
   final Stream<FilterChangeEvent> changes;
@@ -29,12 +30,20 @@ class _NewsListState extends State<NewsList> {
     dataStream = widget.changes.asyncExpand((FilterChangeEvent event) {
       lastEvent = event;
       page = 1;
-      return newsApi.everything(
-          language: event.language,
-          sortBy: event.sortBy,
-          page: page,
-          pageSize: pageSize);
-    });
+      return Stream.fromFuture(Firestore.instance
+          .collection('params')
+          .document('newsQuery')
+          .get()
+          .then((snapshot) => event
+            ..q = snapshot.data['q']
+            ..domains = snapshot.data['domains']));
+    }).asyncExpand((FilterChangeEvent event) => newsApi.everything(
+        q: event.q,
+        domains: event.domains,
+        language: event.language,
+        sortBy: event.sortBy,
+        page: page,
+        pageSize: pageSize));
 
     dataStream.listen((val) {
       setState(() {
@@ -78,7 +87,8 @@ class _NewsListState extends State<NewsList> {
               children: <Widget>[
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(data[index]['urlToImage']),),
+                    backgroundImage: NetworkImage(data[index]['urlToImage']),
+                  ),
                   title: Text(
                     data[index]['title'],
                     maxLines: 2,

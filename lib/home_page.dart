@@ -11,7 +11,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  StreamController<FilterChangeEvent> _changeController = new StreamController<FilterChangeEvent>();
+  StreamController<FilterChangeEvent> _changeController =
+      new StreamController<FilterChangeEvent>();
 
   @override
   Widget build(BuildContext context) {

@@ -19,9 +19,8 @@ class _NewsApiService {
         .map((val) => '${val.key}=${val.value}')
         .join('&');
 
-    final response =
-        await http.get('$apiUrl/$url?$queies', headers: {'X-Api-Key': apiKey});
-
+    final response = await http.get(Uri.encodeFull('$apiUrl/$url?$queies'),
+        headers: {'X-Api-Key': apiKey});
     yield json.decode(response.body);
   }
 
@@ -47,7 +46,7 @@ class _NewsApiService {
   Stream everything(
       {String q,
       List<String> sources,
-      List<String> domains,
+      List domains,
       List<String> excludeDomains,
       String from,
       String to,
@@ -57,12 +56,10 @@ class _NewsApiService {
       int page,
       String apiKey}) {
     return _fetch('everything', body: {
-      // 'q': q,
-      'q': "(javascript OR (android AND flutter) OR (ios AND flutter) OR typescript OR css OR scss OR nodejs OR node.js OR angular OR react OR npm OR browsers OR браузеры OR web OR фронтенд OR frontend OR NOT ('java' OR 'разработка игр' OR e-commerce OR iptelefon))",
+      'q': q,
       'sources': sources?.join(','),
-      // 'domains': domains?.join(','),
-      'domains': 'habr.com',
-      'excludeDomains': domains?.join(','),
+      'domains': domains?.join(','),
+      'excludeDomains': excludeDomains?.join(','),
       'from': from,
       'to': to,
       'language': language.value,
@@ -87,4 +84,5 @@ class _NewsApiService {
   }
 }
 
-final newsApi = new _NewsApiService('022242c86959436495a04d00b0635a24', API_URL);
+final newsApi =
+    new _NewsApiService('022242c86959436495a04d00b0635a24', API_URL);
