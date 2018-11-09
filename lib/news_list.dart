@@ -3,6 +3,7 @@ import 'package:frontend_notes/services/news_api_service.dart';
 import 'package:frontend_notes/filter.dart';
 import 'package:frontend_notes/news_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:share/share.dart';
 
 class NewsList extends StatefulWidget {
   final Stream<FilterChangeEvent> changes;
@@ -12,6 +13,68 @@ class NewsList extends StatefulWidget {
   @override
   _NewsListState createState() {
     return _NewsListState();
+  }
+}
+
+class NewsCard extends StatelessWidget {
+  final Map data;
+
+  NewsCard({Key key, this.data}):super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(data['urlToImage']),
+                    ),
+                    title: Text(
+                      data['title'],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(
+                      '${data['source']['name']}, ${data['author']}',
+                      maxLines: 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                    child: Text(data['description']),
+                  ),
+                  ButtonTheme.bar(
+                    child: ButtonBar(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(
+                            Icons.share,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          onPressed: () {
+                            Share.share('text');
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.book,
+                              color: Theme.of(context).primaryColor),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    NewsPage(url: data['url']),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ));
   }
 }
 
@@ -38,7 +101,7 @@ class _NewsListState extends State<NewsList> {
             ..q = snapshot.data['q']
             ..domains = snapshot.data['domains']));
     }).asyncExpand((FilterChangeEvent event) => newsApi.everything(
-        q: event.q,
+        q: lastEvent.q,
         domains: event.domains,
         language: event.language,
         sortBy: event.sortBy,
@@ -58,6 +121,8 @@ class _NewsListState extends State<NewsList> {
 
     newsApi
         .everything(
+            q: lastEvent.q,
+            domains: lastEvent.domains,
             language: lastEvent.language,
             sortBy: lastEvent.sortBy,
             page: page,
@@ -69,64 +134,49 @@ class _NewsListState extends State<NewsList> {
     });
   }
 
+  Future _refresh() async {
+    return newsApi
+        .everything(
+            q: lastEvent.q,
+            domains: lastEvent.domains,
+            language: lastEvent.language,
+            sortBy: lastEvent.sortBy,
+            page: 1,
+            pageSize: pageSize * page)
+        .last
+        .then((res) {
+      setState(() {
+        data = res['articles'];
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        final bool isLast = data.length - 1 == index;
-        if (isLast) {
-          fetch();
-        }
+        child: RefreshIndicator(
+      onRefresh: _refresh,
+      child: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          final bool isLast = data.length - 1 == index;
+          if (isLast) {
+            fetch();
 
-        return Card(
-            key: Key(index.toString()),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            return Column(
               children: <Widget>[
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(data[index]['urlToImage']),
-                  ),
-                  title: Text(
-                    data[index]['title'],
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    '${data[index]['source']['name']}, ${data[index]['author']}',
-                    maxLines: 1,
-                  ),
-                ),
+                NewsCard(data: data[index], key: Key(index.toString()),),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                  child: Text(data[index]['description']),
-                ),
-                ButtonTheme.bar(
-                  child: ButtonBar(
-                    children: <Widget>[
-                      FlatButton(
-                        child: Text('READ',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            )),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  NewsPage(url: data[index]['url']),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: CircularProgressIndicator(),
+                )
               ],
-            ));
-      },
+            );
+          }
+
+          return NewsCard(data: data[index], key: Key(index.toString()),);
+        },
+      ),
     ));
   }
 }
