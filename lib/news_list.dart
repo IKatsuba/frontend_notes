@@ -54,7 +54,7 @@ class NewsCard extends StatelessWidget {
                             color: Theme.of(context).primaryColor,
                           ),
                           onPressed: () {
-                            Share.share('text');
+                            Share.share('${data['title']} ${data['url']}');
                           },
                         ),
                         IconButton(
