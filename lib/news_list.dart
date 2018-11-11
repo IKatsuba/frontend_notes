@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_notes/services/news_api_service.dart';
 import 'package:frontend_notes/filter.dart';
-import 'package:frontend_notes/news_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share/share.dart';
+import './models/article_response.dart';
+import './models/article.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class NewsList extends StatefulWidget {
   final Stream<FilterChangeEvent> changes;
@@ -17,70 +20,67 @@ class NewsList extends StatefulWidget {
 }
 
 class NewsCard extends StatelessWidget {
-  final Map data;
+  final Article data;
 
-  NewsCard({Key key, this.data}):super(key: key);
+  NewsCard({Key key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('date ${data.publishedAt}');
     return Card(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(data['urlToImage']),
-                    ),
-                    title: Text(
-                      data['title'],
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      '${data['source']['name']}, ${data['author']}',
-                      maxLines: 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                    child: Text(data['description']),
-                  ),
-                  ButtonTheme.bar(
-                    child: ButtonBar(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.share,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          onPressed: () {
-                            Share.share('${data['title']} ${data['url']}');
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.book,
-                              color: Theme.of(context).primaryColor),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NewsPage(url: data['url']),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ));
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Image.network(data.urlToImage),
+        ListTile(
+          title: Text(
+            data.title,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            '${data.source.name}, published at ${DateFormat.yMMMMd().format(DateTime.parse(data.publishedAt))}',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(data.description),
+        ),
+        ButtonTheme.bar(
+          child: ButtonBar(
+            alignment: MainAxisAlignment.start,
+            children: <Widget>[
+              FlatButton.icon(
+                label: Text('SHARE'),
+                icon: Icon(
+                  Icons.share,
+                ),
+                onPressed: () {
+                  Share.share('${data.title} ${data.url}');
+                },
+              ),
+              FlatButton.icon(
+                label: Text('READ'),
+                icon: Icon(Icons.book),
+                onPressed: () async {
+                  if (await canLaunch(data.url)) {
+                    await launch(data.url);
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    ));
   }
 }
 
 class _NewsListState extends State<NewsList> {
-  Stream dataStream;
-  List data = [];
+  Stream<ArticleResponse> dataStream;
+  List<Article> data = [];
 
   FilterChangeEvent lastEvent;
   int page = 1;
@@ -110,7 +110,7 @@ class _NewsListState extends State<NewsList> {
 
     dataStream.listen((val) {
       setState(() {
-        data = val['articles'];
+        data = val.articles;
       });
     });
   }
@@ -129,7 +129,7 @@ class _NewsListState extends State<NewsList> {
             pageSize: pageSize)
         .listen((res) {
       setState(() {
-        data.addAll(res['articles']);
+        data.addAll(res.articles);
       });
     });
   }
@@ -146,7 +146,7 @@ class _NewsListState extends State<NewsList> {
         .last
         .then((res) {
       setState(() {
-        data = res['articles'];
+        data = res.articles;
       });
     });
   }
@@ -165,7 +165,10 @@ class _NewsListState extends State<NewsList> {
 
             return Column(
               children: <Widget>[
-                NewsCard(data: data[index], key: Key(index.toString()),),
+                NewsCard(
+                  data: data[index],
+                  key: Key(index.toString()),
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: 20.0),
                   child: CircularProgressIndicator(),
@@ -174,7 +177,10 @@ class _NewsListState extends State<NewsList> {
             );
           }
 
-          return NewsCard(data: data[index], key: Key(index.toString()),);
+          return NewsCard(
+            data: data[index],
+            key: Key(index.toString()),
+          );
         },
       ),
     ));

@@ -6,6 +6,7 @@ import 'package:frontend_notes/enums/categories.dart';
 import 'package:frontend_notes/enums/languages.dart';
 import 'package:frontend_notes/enums/sort_by.dart';
 import 'package:frontend_notes/constants.dart';
+import '../models/article_response.dart';
 
 class _NewsApiService {
   String apiKey;
@@ -43,7 +44,7 @@ class _NewsApiService {
     });
   }
 
-  Stream everything(
+  Stream<ArticleResponse> everything(
       {String q,
       List<String> sources,
       List domains,
@@ -67,7 +68,7 @@ class _NewsApiService {
       'pageSize': pageSize?.toString(),
       'page': page?.toString(),
       'apiKey': apiKey
-    });
+    }).map((res) => ArticleResponse.fromJSON(res));
   }
 
   sources(

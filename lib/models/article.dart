@@ -3,7 +3,9 @@ class ArticleSource {
   String name;
 
   ArticleSource({this.id, this.name});
-}
+
+  factory ArticleSource.fromJSON(json) => ArticleSource(id: json['id'], name: json['name'])
+;}
 
 class Article {
   ArticleSource source;
@@ -16,12 +18,24 @@ class Article {
   String content;
 
   Article(
-      {this.source,
+      {source,
       this.author,
       this.title,
       this.description,
       this.url,
       this.urlToImage,
       this.publishedAt,
-      this.content});
+      this.content}){
+        this.source = ArticleSource.fromJSON(source);
+      }
+
+  factory Article.fromJSON(json) => Article(
+      source: json['source'],
+      author: json['author'],
+      title: json['title'],
+      description: json['description'],
+      url: json['url'],
+      urlToImage: json['urlToImage'],
+      publishedAt: json['publishedAt'],
+      content: json['content']);
 }

@@ -94,7 +94,7 @@ class _FilterState extends State<Filter> {
                   items: widget.sortBy
                       .map((sortBy) => DropdownMenuItem<SortBy>(
                             value: sortBy,
-                            child: Text(sortBy.value),
+                            child: Text(sortBy.toString()),
                           ))
                       .toList(),
                 ),
