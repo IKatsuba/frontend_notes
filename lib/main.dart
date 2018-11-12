@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_notes/home_page.dart';
+import './home_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 

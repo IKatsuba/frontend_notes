@@ -1,6 +1,6 @@
 import 'package:frontend_notes/enums/response_statuses.dart';
-import 'package:frontend_notes/models/base_response.dart';
-import 'package:frontend_notes/models/source.dart';
+import './base_response.dart';
+import './source.dart';
 
 class SourcesResponse extends BaseResponse {
   List<Source> sources;

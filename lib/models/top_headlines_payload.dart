@@ -1,5 +1,4 @@
-import 'package:frontend_notes/enums/categories.dart';
-import 'package:frontend_notes/enums/countries.dart';
+import 'package:frontend_notes/enums/enums.dart';
 
 class TopHeadlinesPayload {
   Countries country;

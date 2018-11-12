@@ -1,4 +1,4 @@
-import 'package:frontend_notes/enums/enum.dart';
+import './enum.dart';
 
 class ResponseStatuses extends Enum<String> {
   static const OK = const ResponseStatuses('ok');

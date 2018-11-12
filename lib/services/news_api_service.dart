@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:frontend_notes/enums/countries.dart';
-import 'package:frontend_notes/enums/categories.dart';
-import 'package:frontend_notes/enums/languages.dart';
-import 'package:frontend_notes/enums/sort_by.dart';
+import 'package:frontend_notes/enums/enums.dart';
 import 'package:frontend_notes/constants.dart';
-import '../models/article_response.dart';
+import '../models/models.dart';
 
 class _NewsApiService {
   String apiKey;

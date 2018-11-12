@@ -1,4 +1,4 @@
-import 'package:frontend_notes/enums/enum.dart';
+import './enum.dart';
 
 class SortBy extends Enum<String> {
   static const RELEVANCY = const SortBy('relevancy', 'Relevancy');

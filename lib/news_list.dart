@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_notes/services/news_api_service.dart';
-import 'package:frontend_notes/filter.dart';
+import './services/news_api_service.dart';
+import './filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share/share.dart';
-import './models/article_response.dart';
-import './models/article.dart';
+import './models/models.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
@@ -26,7 +25,6 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('date ${data.publishedAt}');
     return Card(
         child: Column(
       mainAxisSize: MainAxisSize.min,

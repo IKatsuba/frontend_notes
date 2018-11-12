@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_notes/filter.dart';
-import 'package:frontend_notes/news_list.dart';
+import './filter.dart';
+import './news_list.dart';
 import 'dart:async';
 
 class MyHomePage extends StatefulWidget {

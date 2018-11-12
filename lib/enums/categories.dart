@@ -1,4 +1,4 @@
-import 'package:frontend_notes/enums/enum.dart';
+import './enum.dart';
 
 class Categories extends Enum<String> {
   static const BUSINESS = const Categories('business');

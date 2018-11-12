@@ -1,4 +1,4 @@
-import 'package:frontend_notes/enums/response_statuses.dart';
+import 'package:frontend_notes/enums/enums.dart';
 
 class BaseResponse {
   ResponseStatuses status;

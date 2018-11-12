@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_notes/enums/languages.dart';
-import 'package:frontend_notes/enums/sort_by.dart';
+import 'package:frontend_notes/enums/enums.dart';
 
 class FilterChangeEvent {
   Languages language;

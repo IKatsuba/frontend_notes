@@ -1,4 +1,4 @@
-import 'package:frontend_notes/enums/enum.dart';
+import './enum.dart';
 
 class Countries extends Enum<String>{
   static const AE = const Countries('ae');
