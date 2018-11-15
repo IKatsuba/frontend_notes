@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import './services/news_api_service.dart';
+import '../services/news_api_service.dart';
 import './filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share/share.dart';
-import './models/models.dart';
+import '../models/models.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
@@ -26,62 +26,64 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        margin: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-            height: 100.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                image: NetworkImage(data.urlToImage),
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+                height: 100.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+                  image: DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    image: NetworkImage(data.urlToImage),
+                  ),
+                )),
+            ListTile(
+              title: Text(
+                data.title,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
-            )),
-        ListTile(
-          title: Text(
-            data.title,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Text(
-            '${data.source.name}, published at ${DateFormat.yMMMMd().format(DateTime.parse(data.publishedAt))}',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(data.description),
-        ),
-        ButtonTheme.bar(
-          child: ButtonBar(
-            alignment: MainAxisAlignment.start,
-            children: <Widget>[
-              FlatButton.icon(
-                label: Text('SHARE'),
-                icon: Icon(
-                  Icons.share,
-                ),
-                onPressed: () {
-                  Share.share('${data.title} ${data.url}');
-                },
+              subtitle: Text(
+                '${data.source.name}, published at ${DateFormat.yMMMMd().format(DateTime.parse(data.publishedAt))}',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              FlatButton.icon(
-                label: Text('READ'),
-                icon: Icon(Icons.book),
-                onPressed: () async {
-                  if (await canLaunch(data.url)) {
-                    await launch(data.url);
-                  }
-                },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(data.description),
+            ),
+            ButtonTheme.bar(
+              child: ButtonBar(
+                alignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  FlatButton.icon(
+                    label: Text('SHARE'),
+                    icon: Icon(
+                      Icons.share,
+                    ),
+                    onPressed: () {
+                      Share.share('${data.title} ${data.url}');
+                    },
+                  ),
+                  FlatButton.icon(
+                    label: Text('READ'),
+                    icon: Icon(Icons.book),
+                    onPressed: () async {
+                      if (await canLaunch(data.url)) {
+                        await launch(data.url);
+                      }
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
-    ));
+            ),
+          ],
+        ));
   }
 }
 

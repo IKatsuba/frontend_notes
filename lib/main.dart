@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import './home_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import './enums/enums.dart';
+import './pages/pages.dart';
 
 void main() => runApp(new MyApp());
 
@@ -14,7 +15,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: new ThemeData(
           brightness: Brightness.dark, primaryColor: Colors.pink[700]),
-      home: MyHomePage(),
+      routes: {
+        Routes.Home: (context) => HomePage(),
+        Routes.About: (context) => AboutPage()
+      },
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],
