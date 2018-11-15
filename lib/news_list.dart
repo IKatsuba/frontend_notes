@@ -26,10 +26,19 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Image.network(data.urlToImage),
+        Container(
+            height: 100.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fitWidth,
+                image: NetworkImage(data.urlToImage),
+              ),
+            )),
         ListTile(
           title: Text(
             data.title,

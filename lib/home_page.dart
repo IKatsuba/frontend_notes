@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './filter.dart';
 import './news_list.dart';
 import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -18,6 +19,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Image.asset('assets/github.png'),
+            onPressed: () {
+              launch('https://github.com/IKatsuba/frontend_notes');
+            },
+          )
+        ],
         title: Wrap(
           children: <Widget>[
             Text(
