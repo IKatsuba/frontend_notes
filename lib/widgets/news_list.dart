@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import '../services/news_api_service.dart';
 import './filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:share/share.dart';
 import '../models/models.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart';
+import './fn_card.dart';
+import './news_card.dart';
 
 class NewsList extends StatefulWidget {
   final Stream<FilterChangeEvent> changes;
@@ -15,75 +14,6 @@ class NewsList extends StatefulWidget {
   @override
   _NewsListState createState() {
     return _NewsListState();
-  }
-}
-
-class NewsCard extends StatelessWidget {
-  final Article data;
-
-  NewsCard({Key key, this.data}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-        margin: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-                height: 100.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
-                  image: DecorationImage(
-                    fit: BoxFit.fitWidth,
-                    image: NetworkImage(data.urlToImage),
-                  ),
-                )),
-            ListTile(
-              title: Text(
-                data.title,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Text(
-                '${data.source.name}, published at ${DateFormat.yMMMMd().format(DateTime.parse(data.publishedAt))}',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(data.description),
-            ),
-            ButtonTheme.bar(
-              child: ButtonBar(
-                alignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  FlatButton.icon(
-                    label: Text('SHARE'),
-                    icon: Icon(
-                      Icons.share,
-                    ),
-                    onPressed: () {
-                      Share.share('${data.title} ${data.url}');
-                    },
-                  ),
-                  FlatButton.icon(
-                    label: Text('READ'),
-                    icon: Icon(Icons.book),
-                    onPressed: () async {
-                      if (await canLaunch(data.url)) {
-                        await launch(data.url);
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ));
   }
 }
 
@@ -162,36 +92,35 @@ class _NewsListState extends State<NewsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: RefreshIndicator(
+    return RefreshIndicator(
       onRefresh: _refresh,
-      child: ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          final bool isLast = data.length - 1 == index;
-          if (isLast) {
-            fetch();
+      child: SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+        final bool isLast = data.length - 1 == index;
+        if (isLast) {
+          fetch();
 
-            return Column(
-              children: <Widget>[
-                NewsCard(
-                  data: data[index],
-                  key: Key(index.toString()),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: CircularProgressIndicator(),
-                )
-              ],
-            );
-          }
-
-          return NewsCard(
-            data: data[index],
-            key: Key(index.toString()),
+          return Column(
+            children: <Widget>[
+              FnCard(
+                child: NewsCadr(data[index]),
+                key: Key(index.toString()),
+                isLast: isLast,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: CircularProgressIndicator(),
+              )
+            ],
           );
-        },
-      ),
-    ));
+        }
+
+        return FnCard(
+          child: NewsCadr(data[index]),
+          key: Key(index.toString()),
+          isFirst: index == 0,
+        );
+      }, childCount: data.length)),
+    );
   }
 }

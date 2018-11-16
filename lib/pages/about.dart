@@ -7,13 +7,11 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+        appBar: FnBar(
           title: Wrap(
-            children: <Widget>[Text('About '), AppTitle()],
+            children: <Widget>[Text('About '), FnTitle()],
           ),
-          actions: <Widget>[
-            GithubButton()
-          ],
+          actions: <Widget>[GithubButton()],
         ),
         body: ListView(
           children: <Widget>[

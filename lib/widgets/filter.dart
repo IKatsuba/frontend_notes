@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_notes/enums/enums.dart';
+import './fn_card.dart';
 
 class FilterChangeEvent {
   Languages language;
@@ -53,55 +54,53 @@ class _FilterState extends State<Filter> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Row(
-        children: <Widget>[
-          Container(
-              width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width * 0.05),
-              child: new InputDecorator(
-                  decoration: const InputDecoration(
-                    labelText: 'Language',
-                  ),
-                  child: new DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      isDense: true,
-                      value: _language,
-                      items: widget.languages
-                          .map((lang) => DropdownMenuItem<Languages>(
-                                value: lang,
-                                child: Text(lang.value.toUpperCase()),
-                              ))
-                          .toList(),
-                      onChanged: (value) => onChange(language: value),
-                    ),
-                  ))),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.45,
-            padding:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
-            child: new InputDecorator(
-              decoration: const InputDecoration(
-                labelText: 'Sort by',
-              ),
-              child: new DropdownButtonHideUnderline(
-                child: new DropdownButton<SortBy>(
-                  value: _sortBy,
-                  isDense: true,
-                  onChanged: (value) => onChange(sortBy: value),
-                  items: widget.sortBy
-                      .map((sortBy) => DropdownMenuItem<SortBy>(
-                            value: sortBy,
-                            child: Text(sortBy.toString()),
-                          ))
-                      .toList(),
-                ),
+    return Container(
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 6.0, right: 8.0),
+                child: InputDecorator(
+                    decoration: const InputDecoration(labelText: 'Language'),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        isDense: true,
+                        value: _language,
+                        items: widget.languages
+                            .map((lang) => DropdownMenuItem<Languages>(
+                                  value: lang,
+                                  child: Text(lang.value.toUpperCase()),
+                                ))
+                            .toList(),
+                        onChanged: (value) => onChange(language: value),
+                      ),
+                    )),
               ),
             ),
-          )
-        ],
-      )
-    ]);
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.only(left: 6.0, right: 8.0),
+              child: InputDecorator(
+                decoration: const InputDecoration(
+                  labelText: 'Sort by',
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<SortBy>(
+                    value: _sortBy,
+                    isDense: true,
+                    onChanged: (value) => onChange(sortBy: value),
+                    items: widget.sortBy
+                        .map((sortBy) => DropdownMenuItem<SortBy>(
+                              value: sortBy,
+                              child: Text(sortBy.toString()),
+                            ))
+                        .toList(),
+                  ),
+                ),
+              ),
+            ))
+          ],
+        ));
   }
 }

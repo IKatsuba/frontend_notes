@@ -14,9 +14,24 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Flutter Demo',
       theme: new ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: Colors.pink[700],
-          fontFamily: 'Raleway'),
+        brightness: Brightness.dark,
+        fontFamily: 'Raleway',
+        primaryColor: Colors.pink.shade600,
+        scaffoldBackgroundColor: Colors.grey.shade800,
+        cardColor: Colors.black12,
+        buttonColor: Colors.pink.shade700,
+        canvasColor: Colors.grey.shade700,
+        accentTextTheme: TextTheme(
+          button: TextStyle(
+            color: Colors.pink.shade200
+          )
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade700)
+          ),
+        )
+      ),
       routes: {
         Routes.Home: (context) => HomePage(),
         Routes.About: (context) => AboutPage()

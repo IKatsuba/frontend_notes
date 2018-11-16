@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppTitle extends StatelessWidget {
+class FnTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(

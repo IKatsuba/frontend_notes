@@ -6,38 +6,69 @@ class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => new _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   StreamController<FilterChangeEvent> _changeController =
-      new StreamController<FilterChangeEvent>();
+      StreamController<FilterChangeEvent>();
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      drawer: AppDrawer(),
-      appBar: new AppBar(
-        actions: <Widget>[
-          GithubButton()
-        ],
-        title: AppTitle(),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        child: Column(
-          children: <Widget>[
-            Filter(
-              onChange: (event) {
-                _changeController.add(event);
+    return Scaffold(
+      drawer: FnDrawer(),
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                child: SliverToBoxAdapter(
+                    child: FnBar(actions: <Widget>[GithubButton()])),
+              ),
+            ];
+          },
+          body: SafeArea(
+            top: false,
+            bottom: false,
+            child: Builder(
+              builder: (BuildContext context) {
+                return CustomScrollView(
+                  key: PageStorageKey<String>('name'),
+                  slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Filter(
+                        onChange: (event) {
+                          _changeController.add(event);
+                        },
+                      ),
+                    ),
+                    SliverPadding(
+                        padding: const EdgeInsets.all(8.0),
+                        sliver: NewsList(
+                          changes: _changeController.stream,
+                        )),
+                  ],
+                );
               },
             ),
-            NewsList(
-              changes: _changeController.stream,
-            )
-          ],
-        ),
-      ),
+          )),
+      // child: Column(
+      //   children: <Widget>[
+      //     Filter(
+      //       onChange: (event) {
+      //         _changeController.add(event);
+      //       },
+      //     ),
+      //     NewsList(
+      //       changes: _changeController.stream,
+      //     )
+      //   ],
+      // ),
     );
   }
 }
