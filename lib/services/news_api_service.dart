@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:frontend_notes/enums/enums.dart';
 import 'package:frontend_notes/constants.dart';
 import '../models/models.dart';
+import './config.dart';
 
 class _NewsApiService {
   String apiKey;
@@ -83,4 +84,4 @@ class _NewsApiService {
 }
 
 final newsApi =
-    new _NewsApiService('022242c86959436495a04d00b0635a24', API_URL);
+    new _NewsApiService(config.getNewsApiKey(), API_URL);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_notes/enums/enums.dart';
-import './fn_card.dart';
 
 class FilterChangeEvent {
   Languages language;

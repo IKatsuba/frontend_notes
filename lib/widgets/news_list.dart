@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/news_api_service.dart';
+import '../services/services.dart';
 import './filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/models.dart';
