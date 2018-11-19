@@ -12,15 +12,14 @@ class NewsList extends StatefulWidget {
   NewsList({Key key, this.changes}) : super(key: key);
 
   @override
-  _NewsListState createState() {
-    return _NewsListState();
-  }
+  NewsListState createState() => NewsListState();
 }
 
-class _NewsListState extends State<NewsList> {
+class NewsListState extends State<NewsList> with TickerProviderStateMixin {
   Stream<ArticleResponse> dataStream;
   List<Article> data = [];
-
+  AnimationController controller;
+  Animation<Offset> animation;
   FilterChangeEvent lastEvent;
   int page = 1;
   int pageSize = 10;
@@ -47,11 +46,22 @@ class _NewsListState extends State<NewsList> {
         page: page,
         pageSize: pageSize));
 
-    dataStream.listen((val) {
+    dataStream.listen((val) async {
+      await controller.reverse();
       setState(() {
         data = val.articles;
+        controller.forward();
       });
     });
+
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 700), vsync: this);
+    final Animation curve =
+        CurvedAnimation(parent: controller, curve: Cubic(.62, .28, .23, .99));
+    animation = new Tween<Offset>(
+      begin: const Offset(0.0, 3.0),
+      end: Offset.zero,
+    ).animate(curve);
   }
 
   void fetch() {
@@ -67,13 +77,13 @@ class _NewsListState extends State<NewsList> {
             page: page,
             pageSize: pageSize)
         .listen((res) {
-      setState(() {
+      setState(() async {
         data.addAll(res.articles);
       });
     });
   }
 
-  Future _refresh() async {
+  Future refresh() async {
     return newsApi
         .everything(
             q: lastEvent.q,
@@ -83,44 +93,41 @@ class _NewsListState extends State<NewsList> {
             page: 1,
             pageSize: pageSize * page)
         .last
-        .then((res) {
+        .then((res) async {
+      await controller.reverse();
       setState(() {
         data = res.articles;
+        controller.forward();
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-        final bool isLast = data.length - 1 == index;
-        if (isLast) {
-          fetch();
+    return SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) {
+      final bool isLast = data.length - 1 == index;
+      if (isLast) {
+        fetch();
 
-          return Column(
-            children: <Widget>[
-              FnCard(
-                child: NewsCadr(data[index]),
-                key: Key(index.toString()),
-                isLast: isLast,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: CircularProgressIndicator(),
-              )
-            ],
-          );
-        }
-
-        return FnCard(
-          child: NewsCadr(data[index]),
-          key: Key(index.toString()),
-          isFirst: index == 0,
+        return Column(
+          children: <Widget>[
+            FnCard(
+              child: NewsCadr(data[index]),
+              key: Key(index.toString()),
+              isLast: isLast,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20.0),
+              child: CircularProgressIndicator(),
+            )
+          ],
         );
-      }, childCount: data.length)),
-    );
+      }
+
+      return SlideTransition(
+          position: animation,
+          child: FnCard(child: NewsCadr(data[index]), isFirst: index == 0));
+    }, childCount: data.length));
   }
 }

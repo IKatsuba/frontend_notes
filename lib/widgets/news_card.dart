@@ -9,6 +9,23 @@ class NewsCadr extends StatelessWidget {
 
   NewsCadr(this.data, {Key key}) : super(key: key);
 
+  Widget _getImage() {
+    if (data.urlToImage == null) {
+      return Container();
+    }
+
+    return AspectRatio(
+      aspectRatio: 16.0 / 9.0,
+      child: Container(
+          decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.fill,
+          image: NetworkImage(data.urlToImage),
+        ),
+      )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,16 +49,7 @@ class NewsCadr extends StatelessWidget {
               },
               color: Theme.of(context).buttonColor,
             )),
-        AspectRatio(
-          aspectRatio: 16.0 / 9.0,
-          child: Container(
-              decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(data.urlToImage),
-            ),
-          )),
-        ),
+        _getImage(),
         Padding(
           padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
           child: Text(
