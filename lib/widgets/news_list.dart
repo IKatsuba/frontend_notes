@@ -24,6 +24,7 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
 
   AnimationController opacityController;
   Animation<double> opacityAnimation;
+  Animation<double> scaleAnimation;
 
   FilterChangeEvent lastEvent;
 
@@ -72,11 +73,17 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
         parent: slideController, curve: Cubic(.62, .28, .23, .99)));
 
     opacityController = AnimationController(
-        duration: const Duration(milliseconds: 700), vsync: this);
+        duration: const Duration(milliseconds: 300), vsync: this);
 
     opacityAnimation = Tween<double>(
       begin: 1.0,
       end: 0,
+    ).animate(CurvedAnimation(
+        parent: opacityController, curve: Cubic(.62, .28, .23, .99)));
+
+    scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.95,
     ).animate(CurvedAnimation(
         parent: opacityController, curve: Cubic(.62, .28, .23, .99)));
   }
@@ -144,11 +151,15 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
         );
       }
 
-      return FadeTransition(
-        opacity: opacityAnimation,
-        child: SlideTransition(
-            position: slideAnimation,
-            child: FnCard(child: NewsCadr(data[index]), isFirst: index == 0)),
+      return ScaleTransition(
+        scale: scaleAnimation,
+        alignment: Alignment.topCenter,
+        child: FadeTransition(
+          opacity: opacityAnimation,
+          child: SlideTransition(
+              position: slideAnimation,
+              child: FnCard(child: NewsCadr(data[index]), isFirst: index == 0)),
+        ),
       );
     }, childCount: data.length));
   }
