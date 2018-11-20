@@ -7,6 +7,6 @@ Frontend Notes
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
-powered by NewsAPI.org
+Powered by [NewsAPI.org](https://newsapi.org)
 
-![screenshot](screenshot/main.png)
+![screenshot](./screenshots/main.png)
