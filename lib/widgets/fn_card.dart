@@ -14,8 +14,8 @@ class FnCard extends StatelessWidget {
         margin: EdgeInsets.only(
             left: 4.0,
             right: 4.0,
-            top: isFirst ? 8.0 : 1,
-            bottom: isLast ? 8.0 : 1),
+            top: isFirst ? 8.0 : 2,
+            bottom: isLast ? 8.0 : 2),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
                 top: Radius.circular(isFirst ? 16.0 : 0),

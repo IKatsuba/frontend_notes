@@ -18,9 +18,15 @@ class NewsList extends StatefulWidget {
 class NewsListState extends State<NewsList> with TickerProviderStateMixin {
   Stream<ArticleResponse> dataStream;
   List<Article> data = [];
-  AnimationController controller;
-  Animation<Offset> animation;
+
+  AnimationController slideController;
+  Animation<Offset> slideAnimation;
+
+  AnimationController opacityController;
+  Animation<double> opacityAnimation;
+
   FilterChangeEvent lastEvent;
+
   int page = 1;
   int pageSize = 10;
 
@@ -47,21 +53,32 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
         pageSize: pageSize));
 
     dataStream.listen((val) async {
-      await controller.reverse();
+      await opacityController.forward();
+      slideController.reset();
+      opacityController.reset();
       setState(() {
         data = val.articles;
-        controller.forward();
+        slideController.forward();
       });
     });
 
-    controller = AnimationController(
+    slideController = AnimationController(
         duration: const Duration(milliseconds: 700), vsync: this);
-    final Animation curve =
-        CurvedAnimation(parent: controller, curve: Cubic(.62, .28, .23, .99));
-    animation = new Tween<Offset>(
+
+    slideAnimation = Tween<Offset>(
       begin: const Offset(0.0, 3.0),
       end: Offset.zero,
-    ).animate(curve);
+    ).animate(CurvedAnimation(
+        parent: slideController, curve: Cubic(.62, .28, .23, .99)));
+
+    opacityController = AnimationController(
+        duration: const Duration(milliseconds: 700), vsync: this);
+
+    opacityAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0,
+    ).animate(CurvedAnimation(
+        parent: opacityController, curve: Cubic(.62, .28, .23, .99)));
   }
 
   void fetch() {
@@ -94,10 +111,12 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
             pageSize: pageSize * page)
         .last
         .then((res) async {
-      await controller.reverse();
+      await opacityController.forward();
+      slideController.reset();
+      opacityController.reset();
       setState(() {
         data = res.articles;
-        controller.forward();
+        slideController.forward();
       });
     });
   }
@@ -125,9 +144,12 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
         );
       }
 
-      return SlideTransition(
-          position: animation,
-          child: FnCard(child: NewsCadr(data[index]), isFirst: index == 0));
+      return FadeTransition(
+        opacity: opacityAnimation,
+        child: SlideTransition(
+            position: slideAnimation,
+            child: FnCard(child: NewsCadr(data[index]), isFirst: index == 0)),
+      );
     }, childCount: data.length));
   }
 }
