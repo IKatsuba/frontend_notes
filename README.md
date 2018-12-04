@@ -9,4 +9,4 @@ For help getting started with Flutter, view our online
 
 Powered by [NewsAPI.org](https://newsapi.org)
 
-![screenshot](./screenshots/main.png)
+![screen](./screenshots/main.gif)
