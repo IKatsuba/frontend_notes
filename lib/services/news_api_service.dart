@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:frontend_notes/enums/enums.dart';
-import 'package:frontend_notes/constants.dart';
 import '../models/models.dart';
 import './config.dart';
 
@@ -84,4 +83,4 @@ class _NewsApiService {
 }
 
 final newsApi =
-    new _NewsApiService(config.getNewsApiKey(), API_URL);
+    new _NewsApiService(config.getNewsApiKey(), config.getNewsApiUrl());

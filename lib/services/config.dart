@@ -5,7 +5,7 @@ class _Config {
 
   init() async {
     remoteConfig = await RemoteConfig.instance;
-    final defaults = <String, dynamic>{'news_api_key': ''};
+    final defaults = <String, dynamic>{'news_api_key': '', 'news_api_url': ''};
     await remoteConfig.setDefaults(defaults);
 
     await remoteConfig.fetch();
@@ -13,6 +13,8 @@ class _Config {
   }
 
   String getNewsApiKey() => remoteConfig.getString('news_api_key');
+
+  String getNewsApiUrl() => remoteConfig.getString('news_api_url');
 }
 
 final config = _Config();
