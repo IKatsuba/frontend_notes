@@ -28,10 +28,6 @@ class _FrontendNotesAppState extends State<FrontendNotesApp> {
   void initState() {
     super.initState();
 
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
-    });
-
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
