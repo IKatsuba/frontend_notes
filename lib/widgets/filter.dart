@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_notes/enums/enums.dart';
+import 'package:news_api/news_api.dart';
 
 class FilterChangeEvent {
   Languages language;

@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:frontend_notes/enums/enums.dart';
-import '../models/models.dart';
-import './config.dart';
+import 'enums/enums.dart';
+import 'models/models.dart';
 
-class _NewsApiService {
+class NewsApiService {
   String apiKey;
   String apiUrl;
 
-  _NewsApiService(this.apiKey, this.apiUrl);
+  NewsApiService(this.apiKey, this.apiUrl);
 
   Stream _fetch(String url, {Map<String, String> body}) async* {
     final String queies = List.from((body ?? {}).entries)
@@ -22,7 +21,7 @@ class _NewsApiService {
     yield json.decode(response.body);
   }
 
-  Stream topHeadlines(
+  Stream<ArticleResponse> topHeadlines(
       {Countries country,
       Categories category,
       List<String> sources,
@@ -38,7 +37,7 @@ class _NewsApiService {
       'pageSize': pageSize?.toString(),
       'page': page?.toString(),
       'apiKey': apiKey
-    });
+    }).map((res) => ArticleResponse.fromJSON(res));
   }
 
   Stream<ArticleResponse> everything(
@@ -68,7 +67,7 @@ class _NewsApiService {
     }).map((res) => ArticleResponse.fromJSON(res));
   }
 
-  sources(
+  Stream<SourcesResponse> sources(
       {Categories category,
       Languages language,
       Countries country,
@@ -78,9 +77,6 @@ class _NewsApiService {
       'language': language?.value,
       'country': country?.value,
       'apiKey': apiKey
-    });
+    }).map((res) => SourcesResponse.fromJSON(res));
   }
 }
-
-final newsApi =
-    new _NewsApiService(config.getNewsApiKey(), config.getNewsApiUrl());

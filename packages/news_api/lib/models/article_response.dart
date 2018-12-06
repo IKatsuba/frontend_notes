@@ -1,4 +1,4 @@
-import 'package:frontend_notes/enums/enums.dart';
+import '../enums/enums.dart';
 import './article.dart';
 import './base_response.dart';
 
@@ -21,7 +21,8 @@ class ArticleResponse extends BaseResponse {
       String message,
       String status})
       : super(code: code, message: message) {
-    this.articles = articles.map<Article>((val) => Article.fromJSON(val)).toList();
+    this.articles =
+        articles.map<Article>((val) => Article.fromJSON(val)).toList();
     this.status = ResponseStatuses(status);
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import '../services/services.dart';
-import './filter.dart';
+import 'package:news_api/news_api.dart';
+import 'filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/models.dart';
-import './fn_card.dart';
-import './news_card.dart';
+import 'fn_card.dart';
+import 'news_card.dart';
+import '../services/services.dart';
+
+final newsApi = new NewsApiService(config.getNewsApiKey(), config.getNewsApiUrl());
 
 class NewsList extends StatefulWidget {
   final Stream<FilterChangeEvent> changes;
