@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../widgets/widgets.dart';
-import '../enums/enums.dart';
-import 'package:quick_actions/quick_actions.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -16,25 +14,6 @@ class _HomePageState extends State<HomePage> {
       StreamController<FilterChangeEvent>();
 
   GlobalKey<NewsListState> newsListKey = GlobalKey<NewsListState>();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    final QuickActions quickActions = const QuickActions();
-    quickActions.initialize((String shortcutType) {
-      print(shortcutType);
-      Navigator.of(context).pushNamed(shortcutType);
-    });
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      const ShortcutItem(
-          type: Routes.About,
-          localizedTitle: 'About',
-          icon: '@mipmap/ic_launcher'),
-    ]);
-  }
 
   @override
   Widget build(BuildContext context) {
