@@ -10,7 +10,7 @@ import 'fn_card.dart';
 import 'news_card.dart';
 
 final newsApi =
-    new NewsApiService(config.getNewsApiKey(), config.getNewsApiUrl());
+    new NewsApiService(remoteConfig.getNewsApiKey(), remoteConfig.getNewsApiUrl());
 
 class NewsList extends StatefulWidget {
   final Stream<FilterChangeEvent> changes;

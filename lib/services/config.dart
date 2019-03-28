@@ -17,4 +17,4 @@ class _Config {
   String getNewsApiUrl() => remoteConfig.getString('news_api_url');
 }
 
-final config = _Config();
+final remoteConfig = _Config();
