@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './fn_title.dart';
+
+import 'fn_title.dart';
 
 class FnBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;
@@ -21,7 +22,6 @@ class FnBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         title: title ?? FnTitle(),
         actions: actions,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         automaticallyImplyLeading: automaticallyImplyLeading,
         leading: leading);
   }

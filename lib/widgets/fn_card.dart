@@ -4,6 +4,7 @@ class FnCard extends StatelessWidget {
   final Widget child;
   final bool isFirst;
   final bool isLast;
+
   FnCard({Key key, this.child, this.isFirst = false, this.isLast = false})
       : super(key: key);
 

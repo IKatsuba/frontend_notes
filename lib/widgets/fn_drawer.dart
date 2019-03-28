@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import './fn_title.dart';
-import '../enums/enums.dart';
-import './fn_bar.dart';
+import 'package:frontend_notes/enums/enums.dart';
+
+import 'fn_bar.dart';
+import 'fn_title.dart';
 
 class FnDrawer extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/widgets.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:frontend_notes/widgets/widgets.dart';
 
 class AboutPage extends StatelessWidget {
   @override

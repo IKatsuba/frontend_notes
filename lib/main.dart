@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import './enums/enums.dart';
-import './pages/pages.dart';
-import './services/services.dart';
+import 'package:flutter/material.dart';
+import 'package:frontend_notes/enums/enums.dart';
+import 'package:frontend_notes/pages/pages.dart';
+import 'package:frontend_notes/services/services.dart';
 
 void main() async {
   await config.init();
@@ -33,9 +33,7 @@ class _FrontendNotesAppState extends State<FrontendNotesApp> {
           fontFamily: 'Raleway',
           primaryColor: Colors.pink.shade600,
           scaffoldBackgroundColor: Colors.grey.shade800,
-          appBarTheme: AppBarTheme(
-            color: Colors.grey.shade800
-          ),
+          appBarTheme: AppBarTheme(color: Colors.grey.shade800),
           cardColor: Colors.black12,
           buttonColor: Colors.pink.shade700,
           canvasColor: Colors.grey.shade700,

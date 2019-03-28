@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:news_api/news_api.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:news_api/news_api.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class NewsCadr extends StatelessWidget {
+class NewsCard extends StatelessWidget {
   final Article data;
 
-  NewsCadr(this.data, {Key key}) : super(key: key);
+  NewsCard(this.data, {Key key}) : super(key: key);
 
   Widget _getImage() {
     if (data.urlToImage == null) {

@@ -1,12 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:news_api/news_api.dart';
-import 'filter.dart';
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:frontend_notes/services/services.dart';
+import 'package:news_api/news_api.dart';
+
+import 'filter.dart';
 import 'fn_card.dart';
 import 'news_card.dart';
-import '../services/services.dart';
 
-final newsApi = new NewsApiService(config.getNewsApiKey(), config.getNewsApiUrl());
+final newsApi =
+    new NewsApiService(config.getNewsApiKey(), config.getNewsApiUrl());
 
 class NewsList extends StatefulWidget {
   final Stream<FilterChangeEvent> changes;
@@ -141,7 +145,7 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
         return Column(
           children: <Widget>[
             FnCard(
-              child: NewsCadr(data[index]),
+              child: NewsCard(data[index]),
               key: Key(index.toString()),
               isLast: isLast,
             ),
@@ -160,7 +164,7 @@ class NewsListState extends State<NewsList> with TickerProviderStateMixin {
           opacity: opacityAnimation,
           child: SlideTransition(
               position: slideAnimation,
-              child: FnCard(child: NewsCadr(data[index]), isFirst: index == 0)),
+              child: FnCard(child: NewsCard(data[index]), isFirst: index == 0)),
         ),
       );
     }, childCount: data.length));
