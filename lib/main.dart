@@ -5,11 +5,6 @@ import './enums/enums.dart';
 import './pages/pages.dart';
 import './services/services.dart';
 
-import 'dart:io';
-import 'package:firebase_messaging/firebase_messaging.dart';
-
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
 void main() async {
   await config.init();
 
@@ -27,18 +22,6 @@ class _FrontendNotesAppState extends State<FrontendNotesApp> {
   @override
   void initState() {
     super.initState();
-
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print('on message $message');
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print('on resume $message');
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print('on launch $message');
-      },
-    );
   }
 
   @override
@@ -50,6 +33,9 @@ class _FrontendNotesAppState extends State<FrontendNotesApp> {
           fontFamily: 'Raleway',
           primaryColor: Colors.pink.shade600,
           scaffoldBackgroundColor: Colors.grey.shade800,
+          appBarTheme: AppBarTheme(
+            color: Colors.grey.shade800
+          ),
           cardColor: Colors.black12,
           buttonColor: Colors.pink.shade700,
           canvasColor: Colors.grey.shade700,
