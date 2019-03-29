@@ -11,7 +11,7 @@ class FnTitle extends StatelessWidget {
               color: Theme.of(context).textTheme.caption.color,
               fontWeight: FontWeight.w400),
         ),
-        Text('Notes')
+        Text('Notes'),
       ],
     );
   }

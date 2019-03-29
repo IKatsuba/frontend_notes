@@ -8,24 +8,25 @@ class FnBar extends StatelessWidget implements PreferredSizeWidget {
   final bool automaticallyImplyLeading;
   final Widget leading;
 
-  FnBar(
-      {Key key,
-      this.title,
-      this.actions,
-      this.automaticallyImplyLeading = true,
-      this.leading})
-      : super(key: key);
+  FnBar({
+    Key key,
+    this.title,
+    this.actions,
+    this.automaticallyImplyLeading = true,
+    this.leading,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        elevation: 0,
-        title: title ?? FnTitle(),
-        actions: actions,
-        automaticallyImplyLeading: automaticallyImplyLeading,
-        leading: leading);
+      elevation: 0,
+      title: title ?? FnTitle(),
+      actions: actions,
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      leading: leading,
+    );
   }
 
   @override
-  Size get preferredSize => new Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

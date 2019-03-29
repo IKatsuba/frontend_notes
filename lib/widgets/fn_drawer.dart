@@ -4,13 +4,7 @@ import 'package:frontend_notes/enums/enums.dart';
 import 'fn_bar.dart';
 import 'fn_title.dart';
 
-class FnDrawer extends StatefulWidget {
-  @override
-  _FnDrawerState createState() => _FnDrawerState();
-}
-
-class _FnDrawerState extends State<FnDrawer> {
-  @override
+class FnDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
 
@@ -40,7 +34,7 @@ class _FnDrawerState extends State<FnDrawer> {
             ),
             Divider(
               height: 0,
-            )
+            ),
           ],
         ),
       ),

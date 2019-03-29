@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_notes/services/services.dart';
 import 'package:news_api/news_api.dart';
-
-class FilterChangeEvent {
-  Languages language;
-  SortBy sortBy;
-  String q;
-  List domains;
-
-  FilterChangeEvent({this.language, this.sortBy, this.q, this.domains});
-}
 
 class Filter extends StatefulWidget {
   final List<Languages> languages = [Languages.RU, Languages.EN];
@@ -17,10 +9,6 @@ class Filter extends StatefulWidget {
     SortBy.POPULARITY,
     SortBy.RELEVANCY
   ];
-
-  final void Function(FilterChangeEvent event) onChange;
-
-  Filter({@required this.onChange});
 
   @override
   _FilterState createState() => _FilterState();
@@ -33,10 +21,12 @@ class _FilterState extends State<Filter> {
   @override
   void initState() {
     super.initState();
+
     _language = Languages.RU;
     _sortBy = SortBy.PUBLISHEDAT;
 
-    onChange(language: _language, sortBy: _sortBy);
+    newsService
+        .changeFilter(FilterChangeEvent(language: _language, sortBy: _sortBy));
   }
 
   void onChange({language, sortBy}) {
@@ -44,41 +34,40 @@ class _FilterState extends State<Filter> {
       _language = language ?? _language;
       _sortBy = sortBy ?? _sortBy;
 
-      if (widget.onChange != null) {
-        widget.onChange(
-            new FilterChangeEvent(language: _language, sortBy: _sortBy));
-      }
+      newsService.changeFilter(
+          FilterChangeEvent(language: _language, sortBy: _sortBy));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(left: 6.0, right: 8.0),
-                child: InputDecorator(
-                    decoration: const InputDecoration(labelText: 'Language'),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        isDense: true,
-                        value: _language,
-                        items: widget.languages
-                            .map((lang) => DropdownMenuItem<Languages>(
-                                  value: lang,
-                                  child: Text(lang.value.toUpperCase()),
-                                ))
-                            .toList(),
-                        onChanged: (value) => onChange(language: value),
-                      ),
-                    )),
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(left: 6.0, right: 8.0),
+              child: InputDecorator(
+                decoration: const InputDecoration(labelText: 'Language'),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    isDense: true,
+                    value: _language,
+                    items: widget.languages
+                        .map((lang) => DropdownMenuItem<Languages>(
+                              value: lang,
+                              child: Text(lang.value.toUpperCase()),
+                            ))
+                        .toList(),
+                    onChanged: (value) => onChange(language: value),
+                  ),
+                ),
               ),
             ),
-            Expanded(
-                child: Container(
+          ),
+          Expanded(
+            child: Container(
               padding: EdgeInsets.only(left: 6.0, right: 8.0),
               child: InputDecorator(
                 decoration: const InputDecoration(
@@ -98,8 +87,10 @@ class _FilterState extends State<Filter> {
                   ),
                 ),
               ),
-            ))
-          ],
-        ));
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

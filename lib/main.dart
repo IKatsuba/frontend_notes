@@ -8,7 +8,7 @@ import 'package:frontend_notes/services/services.dart';
 void main() async {
   await remoteConfig.init();
 
-  runApp(new FrontendNotesApp());
+  runApp(FrontendNotesApp());
 }
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -16,9 +16,9 @@ FirebaseAnalytics analytics = FirebaseAnalytics();
 class FrontendNotesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Frontend Notes',
-      theme: new ThemeData(
+      theme: ThemeData(
         brightness: Brightness.dark,
         fontFamily: 'Raleway',
         primaryColor: Colors.pink.shade600,
@@ -36,7 +36,7 @@ class FrontendNotesApp extends StatelessWidget {
       ),
       routes: {
         Routes.Home: (context) => HomePage(),
-        Routes.About: (context) => AboutPage()
+        Routes.About: (context) => AboutPage(),
       },
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
