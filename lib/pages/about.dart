@@ -1,3 +1,4 @@
+import 'package:extremum_size/extremum_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -8,7 +9,8 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: MaxWidth(
+        child: ExtremumSizeWidget(
+          constraints: BoxConstraints(maxWidth: 500.0),
           child: FnBar(
             title: Wrap(
               children: <Widget>[
@@ -23,7 +25,8 @@ class AboutPage extends StatelessWidget {
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),
-      body: MaxWidth(
+      body: ExtremumSizeWidget(
+        constraints: BoxConstraints(maxWidth: 500.0),
         child: ListView(
           children: <Widget>[
             Padding(

@@ -31,6 +31,7 @@ dependencies:
   firebase_remote_config: ^0.0.6+1
   http: 0.12.0
   rxdart: ^0.21.0
+  extremum_size: ^0.0.1
 
 dev_dependencies:
   flutter_test:

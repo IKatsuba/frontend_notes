@@ -1,3 +1,4 @@
+import 'package:extremum_size/extremum_size.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_notes/services/services.dart';
 import 'package:frontend_notes/widgets/fn_card.dart';
@@ -20,7 +21,8 @@ class HomePage extends StatelessWidget {
             stream: newsService.articles,
             initialData: <Article>[],
             builder: (context, snapshot) {
-              return MaxWidth(
+              return ExtremumSizeWidget(
+                constraints: BoxConstraints(maxWidth: 500.0),
                 child: CustomScrollView(
                   key: PageStorageKey<String>('name'),
                   slivers: <Widget>[
