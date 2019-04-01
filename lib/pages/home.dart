@@ -20,47 +20,47 @@ class HomePage extends StatelessWidget {
             stream: newsService.articles,
             initialData: <Article>[],
             builder: (context, snapshot) {
-              return CustomScrollView(
-                key: PageStorageKey<String>('name'),
-                slivers: <Widget>[
-                  SliverAppBar(
-                    title: FnTitle(),
-                    floating: true,
-                    actions: <Widget>[
-                      GithubButton()
-                    ],
-                  ),
-                  SliverToBoxAdapter(
-                    child: Filter(),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (context, int i) {
-                        if (i == snapshot.data.length) {
-                          newsService.nextPage();
-
-                          return Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 20.0),
-                                child: CircularProgressIndicator(),
-                              ),
-                            ],
-                          );
-                        } else {
-                          final article = snapshot.data[i];
-
-                          return FnCard(
-                            child: NewsCard(article),
-                            isFirst: i == 0,
-                            isLast: i == snapshot.data.length - 1,
-                          );
-                        }
-                      },
-                      childCount: snapshot.data.length + 1,
+              return MaxWidth(
+                child: CustomScrollView(
+                  key: PageStorageKey<String>('name'),
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      title: FnTitle(),
+                      floating: true,
+                      actions: <Widget>[GithubButton()],
                     ),
-                  )
-                ],
+                    SliverToBoxAdapter(
+                      child: Filter(),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, int i) {
+                          if (i == snapshot.data.length) {
+                            newsService.nextPage();
+
+                            return Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20.0),
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ],
+                            );
+                          } else {
+                            final article = snapshot.data[i];
+
+                            return FnCard(
+                              child: NewsCard(article),
+                              isFirst: i == 0,
+                              isLast: i == snapshot.data.length - 1,
+                            );
+                          }
+                        },
+                        childCount: snapshot.data.length + 1,
+                      ),
+                    )
+                  ],
+                ),
               );
             },
           ),
