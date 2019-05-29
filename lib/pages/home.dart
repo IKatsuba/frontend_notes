@@ -9,7 +9,8 @@ import 'package:news_api/models/models.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
 
-  build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       drawer: FnDrawer(),
       body: RefreshIndicator(
